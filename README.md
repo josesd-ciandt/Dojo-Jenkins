@@ -1,13 +1,16 @@
 # Dojo Jenkins
 
-- Docker
+- Continuous Integration - Integração Contínua
+- Continuous Delivery - Entrega Contínua
+
+* Docker
 
   - O Que é Docker?
   - Por que utilizar?
   - Instalando Docker
   - Docker Compose
 
-- Jenkins
+* Jenkins
   - O que é Jenkins?
   - Jenkins Plugins
   - Instalação
