@@ -3,7 +3,8 @@
 - Docker
 
   - O Que é Docker?
-  - Por que utilizar?+ Instalando Docker
+  - Por que utilizar?
+  - Instalando Docker
   - Docker Compose
 
 - Jenkins
