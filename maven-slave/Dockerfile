@@ -1,10 +1,4 @@
-FROM jenkins:alpine
-
-ENV JAVA_VERSION="8.0.252-open"
-ENV MAVEN_VERSION="3.6.3"
-
-# Defining default non-root user UID, GID, and name
-ENV SDKMAN_DIR=/root/.sdkman
+FROM maven:alpine
 
 USER root
 
@@ -14,22 +8,14 @@ RUN apk --update add curl
 RUN apk --update add openjdk8-jre openssh git && \
     rm -rf /var/cache/apk/*
 
-# Downloading SDKMAN!
-RUN curl -s "https://get.sdkman.io" | bash && \
-    echo "sdkman_auto_answer=true" > $SDKMAN_DIR/etc/config && \
-    echo "sdkman_auto_selfupdate=false" >> $SDKMAN_DIR/etc/config
-
-RUN bash -c "source $SDKMAN_DIR/bin/sdkman-init.sh && \
-    yes | sdk install java $JAVA_VERSION && \
-    yes | sdk install maven $MAVEN_VERSION"
-
 ADD https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz /tmp
 RUN tar -xvzf /tmp/docker-latest.tgz && mv docker/* /usr/bin/ && chmod 755 /usr/bin/docker && rm -f /tmp/docker-latest.tgz
 
 RUN delgroup ping
 
 
-RUN adduser -D maven_user -s /bin/sh -G jenkins && \ 
+RUN addgroup jenkins && \
+    adduser -D maven_user -s /bin/sh -G jenkins && \ 
     chown -R maven_user:jenkins /home/maven_user && \
     echo "maven_user:maven_user" | chpasswd && \
     addgroup -g 999 $USER docker && \
