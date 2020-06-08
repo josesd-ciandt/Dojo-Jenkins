@@ -1,18 +1,15 @@
-FROM jenkins:alpine
+FROM jenkins/jenkins:lts-alpine
 
-ENV VERSION "0.0.1"
+COPY plugins.txt /usr/share/jenkins/plugins.txt
 
 USER root
 
-RUN mkdir -p "${JENKINS_HOME}/jobs" "${ITEM_ROOTDIR}/builds"
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/plugins.txt
 
-USER jenkins
+ADD https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz /tmp
+RUN tar -xvzf /tmp/docker-latest.tgz && \
+    mv docker/* /usr/bin/ && \
+    chmod +x /usr/bin/docker && \
+    rm -f /tmp/docker-latest.tgz
 
-RUN echo "lts" > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
-RUN echo "lts" > /usr/share/jenkins/ref/jenkins.install.InstallUtil.lastExecVersion
-# Para configuracoes de Seguranca
-
-
-# Plugins Install
-COPY --chown="jenkins:jenkins" plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+RUN addgroup $USER docker

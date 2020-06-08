@@ -1,7 +1,7 @@
 version: '2'
 services:
     jenkins:
-        image: jenkins-master
+        image: jenkins-master:latest
         privileged: true
         restart: always
         ports:
@@ -10,8 +10,6 @@ services:
         volumes:
             - jenkins-data:/var/jenkins_home/
             - /var/run/docker.sock:/var/run/docker.sock
-        command: "docker exec -i dojo-jenkins_jenkins_1 echo 'lts' > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state"
-        # command: "docker exec -i dojo-jenkins_jenkins_1 echo 'lts' > /usr/share/jenkins/ref/jenkins.install.InstallUtil.lastExecVersion"
     jenkins-nodejs:
         image: jenkins-nodejs
         privileged: true

@@ -1,6 +1,6 @@
 FROM mhart/alpine-node:4
 
-RUN apk --update add openjdk7-jre openssh git && \
+RUN apk --update add openjdk8-jre openssh git && \
     rm -rf /var/cache/apk/*
 
 USER root
@@ -9,8 +9,14 @@ RUN tar -xvzf /tmp/docker-latest.tgz && mv docker/* /usr/bin/ && chmod 755 /usr/
 
 RUN delgroup ping
 
+# adduser - Adiciona  Usuario com shell especifico
+# altera permissão do usuario pra pasta home/jenkins
+# altera a senha do usuario chpasswd
+# adiciona no grupo o usuario
+# altera o arquivo de group adicionando usuario jenkins
+
 RUN addgroup jenkins && \
-    adduser -D jenkins -s /bin/sh -G jenkins && \
+    adduser -D jenkins -s /bin/sh -G jenkins && \ 
     chown -R jenkins:jenkins /home/jenkins && \
     echo "jenkins:jenkins" | chpasswd && \
     addgroup -g 999 $USER docker && \
