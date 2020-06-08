@@ -1,4 +1,5 @@
 node ('nodejs-node') {
-    stage 'Check Node Verison'
-    sh 'node -v'
+    stage ('Check Node Verison') {
+        sh 'node -v'
+    }
 }
